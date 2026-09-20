@@ -1,0 +1,277 @@
+* {
+    user-select: none;
+}
+
+:root {
+    /*
+        Customizable variables
+    */
+    --main-header-font-color: #fff;
+    --main-accent-color: #fff;
+    --searchbar-font-color: #000;
+    --searchbar-general-color: #fff;
+    
+    /*
+        JS-reliant variables
+    */
+    --userScreenWidth: 0;
+    --userScreenHeight: 0;
+}
+
+body {
+    display: block;
+    margin: 0;
+    overflow: hidden;
+}
+
+main {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+/*
+    Functional Elements
+*/
+.static-container {
+    display: block;
+    height: 0;
+}
+
+.center-container {
+    width: fit-content;
+    display: grid;
+    justify-items: center;
+}
+
+.search-container {
+    width: 500px;
+    height: 50px;
+    border-radius: 25px;
+    border: 1px solid var(--searchbar-general-color);
+    display: grid;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-within {
+        &::before{
+            width: 100%;
+            height: 100%;
+            transition: 
+                width 1s ease,
+                height 0.1s ease;
+        }
+
+        input {
+            font: 20px system-ui;
+            color: var(--searchbar-font-color);
+            padding: 0 15px;
+        }
+    }
+
+    &::before {
+        pointer-events: none;
+        position: absolute;
+        content: "";
+        width: 5%;
+        height: 5%;
+        place-self: center;
+        background-color: var(--searchbar-general-color);
+        background-size: contain;
+        border-radius: 5px;
+        transition:
+            width 5s ease,
+            height 0.05s linear;
+    }
+
+    input {
+        content: "";
+        background: transparent;
+        color: transparent;
+
+        border: 0;
+        outline: 0;
+        z-index: 5;
+    }
+}
+
+/*bug
+    Using tab to navigate exposes the hidden apps
+*/
+
+.apps-container {
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+    width: 450px;
+    max-height: 5px;/*5px*/
+
+    background-color: rgba(0,0,0, 15%);
+
+    border: 1px solid var(--main-accent-color);
+    border-top: transparent;
+    border-radius: 0 0 5px 5px;
+    
+    /*bug
+        max-height doesn't seem to correspond well with smaller
+        it animate until max-height, but not the content-height
+    */
+    transition:
+        max-height 2s ease;
+
+    &:hover {
+        max-height: 400px;
+    }
+
+    > .app {
+        display: grid;
+        row-gap: 5px;
+        margin: 5px 0;
+        padding: 5px;
+        place-items: center;
+
+        border: 1px solid transparent;
+        border-radius: 5px;
+
+        text-decoration: none;
+
+        transition: border-color 0.1s linear;
+        
+        &:hover {
+            border-color: var(--main-accent-color);
+        }
+
+        .app-img {
+            width: 64px; height: 64px;
+        }
+
+        .app-text {
+            color: var(--main-accent-color);
+            font: normal small-caps normal .75em system-ui;
+
+            align-self: center;
+        }
+    }
+}
+
+.clock-container {
+    position: absolute;
+    z-index: 0;
+    top: 100px;
+    left: 300px;
+
+    transition:
+        top 0.5s ease,
+        left 0.5s ease;
+        
+    color: #fff;
+
+    .text-container {
+        display: grid;
+        place-items: center;
+
+        font: normal 0 16px system-ui;
+        white-space: nowrap;
+        letter-spacing: 2px;
+        padding: 30px;
+    }
+}
+
+/*
+    Visual Elements
+*/
+@keyframes glideDown {
+    from {
+        transform: translate(0, 25%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#header {
+    font: normal bold 50px "Times New Romans";
+    color: var(--main-header-font-color);
+    letter-spacing: 2px
+}
+
+.selection-box {
+    position: absolute;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid var(--main-accent-color);
+    
+    animation: glideDown 0.5s ease;
+
+    > .handle {
+        position: absolute;
+        height: 10px;
+        width: 10px;
+        border-radius: 2px;
+        background-color: var(--main-accent-color);
+        transform: translate(-50%, -50%);
+    }
+
+    > .top-left {
+        top: 0;
+        left: 0;
+    }
+
+    > .top-right {
+        top: 0;
+        left: 100%;
+    }
+
+    > .bottom-right {
+        top: 100%;
+        left: 100%;
+    }
+
+    > .bottom-left {
+        top: 100%;
+        left: 0;
+    }
+}
+
+background {
+    position: absolute;
+    display: grid;
+    inset: 50px;
+    border: 1px solid var(--main-accent-color);
+    border-radius: 5px;
+    z-index: 0;
+}
+
+background-image {
+    position: absolute;
+    top: -14.8%;
+    display: grid;
+    place-self: center;
+
+    z-index: -5;
+    width: var(--userScreenWidth);
+
+    animation: fadeOut 1s ease;
+
+    transition: filter 1s ease;
+
+    img {
+        width: calc(var(--userScreenWidth)*1.10);
+        aspect-ratio: 16/9;
+    }
+}
+
+body:has(.search-container:focus-within) background-image {
+    filter: blur(1.5px);
+}

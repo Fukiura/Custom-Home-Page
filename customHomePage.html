@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Casturina Home Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="javascript.js" defer></script>
+</head>
+<body>
+    <!--Absolute-Fixed Designs-->
+    <background-image>
+        <img src="images/OceanSky.jpg">
+    </background-image>
+
+    <background>
+        <div class="selection-box clock-container">
+            <div class="handle top-left"></div>
+            <div class="handle top-right"></div>
+            <div class="handle bottom-right"></div>
+            <div class="handle bottom-left"></div>
+            
+            <div class="text-container">
+                <span name="time">##:##:##</span>
+                <span name="date">##/##/##</span>
+                <span name="dayofweek">string</span>
+            </div>
+        </div>
+
+    </background>
+
+    <main>
+        <div class="selection-box center-container">
+            <div class="handle top-left"></div>
+            <div class="handle top-right"></div>
+            <div class="handle bottom-right"></div>
+            <div class="handle bottom-left"></div>
+            <!--Headline-->
+            <div>
+                <span id="header">Castrina</span>
+            </div>
+            
+            <!--Apps/Sites-->
+            <div class="search-container">
+                <input spellcheck="false">
+            </div>
+            <div class="apps-container">
+                <a class="app" href="https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&lang=en-us">
+                    <img class="app-img" src='https://www.google.com/s2/favicons?domain=https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&lang=en-us&sz=128'/>
+                    <span class="app-text">daily login</span>
+                </a>
+
+                <a class="app" href="https://music.youtube.com">
+                    <img class="app-img" src="https://www.google.com/s2/favicons?domain=music.youtube.com&sz=128">
+                    <span class="app-text">youtube music</span>
+                </a>
+
+                <a class="app" href="https://believersgoingback-mc.duckdns.org">
+                    <img class="app-img" src="https://believersgoingback-mc.duckdns.org/imgs/will serfort assets/favicon.ico">
+                    <span class="app-text">mc server</span>
+                </a>
+
+                <a class="app" href="https://www.farmingdale.edu/my-fsc/index.shtml">
+                    <img class="app-img" src="https://www.google.com/s2/favicons?domain=https://www.farmingdale.edu/my-fsc/index.shtml&sz=128">
+                    <span class="app-text">fsc</span>
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+<!--
+    End Script Runtime(for visuals, etc)
+-->
+<script>
+    // Randomize slide animation in selection-box
+    document.querySelectorAll(".selection-box").forEach(e => {
+        let randomTime = Math.random()*2 + 0.5
+        e.style.animationDuration = `${randomTime}s`;
+    });
+</script>
+</html>
