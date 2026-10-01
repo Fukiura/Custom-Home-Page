@@ -181,8 +181,13 @@ main {
 }
 
 /*
-    Visual Elements
+    Visual Elements & Toggles
 */
+
+.no-transition {
+    transition: none;
+}
+
 @keyframes glideDown {
     from {
         transform: translate(0, 25%);
@@ -255,7 +260,7 @@ background {
 
 background-image {
     position: absolute;
-    top: -14.8%;
+    top: -4.5%;
     display: grid;
     place-self: center;
 
