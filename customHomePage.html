@@ -3,29 +3,34 @@
 <head>
     <title>Casturina Home Page</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="javascript.js" defer></script>
+
+    <script src="mouse.js"></script>
+    <script src="widget.js"></script>
+    <script src="main.js" defer></script>
 </head>
 <body>
-    <!--Absolute-Fixed Designs-->
+    <!-- Absolute-Fixed Designs -->
     <background-image>
         <img src="images/OceanSky.jpg">
     </background-image>
 
     <background>
-        <div class="selection-box clock-container">
-            <div class="handle top-left"></div>
-            <div class="handle top-right"></div>
-            <div class="handle bottom-right"></div>
-            <div class="handle bottom-left"></div>
-            
-            <div class="text-container">
-                <span name="time">##:##:##</span>
-                <span name="date">##/##/##</span>
-                <span name="dayofweek">string</span>
-            </div>
-        </div>
-
     </background>
+
+    <!-- Widgets -->
+    <div class="selection-box clock-container">
+        <div class="handle top-left"></div>
+        <div class="handle top-right"></div>
+        <div class="handle bottom-right"></div>
+        <div class="handle bottom-left"></div>
+        
+        <div class="text-container">
+            <span name="time">##:##:##</span>
+            <span name="date">##/##/##</span>
+            <span name="dayofweek">string</span>
+        </div>
+    </div>
+
 
     <main>
         <div class="selection-box center-container">
@@ -33,12 +38,12 @@
             <div class="handle top-right"></div>
             <div class="handle bottom-right"></div>
             <div class="handle bottom-left"></div>
-            <!--Headline-->
+            <!-- Headline -->
             <div>
                 <span id="header">Castrina</span>
             </div>
             
-            <!--Apps/Sites-->
+            <!-- Apps/Sites -->
             <div class="search-container">
                 <input spellcheck="false">
             </div>
