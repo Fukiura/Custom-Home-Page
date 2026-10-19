@@ -73,10 +73,10 @@ function updateTime() {
 /**
  * Main Execution of this JS
  */
-const mouseListener = new mouse(1);
+const mouseListener = new mouse();
 
 //Load widget saves
-//clockWidget.loadWidgetPos();
+clockWidget.loadWidgetPos();
 
 
 updateTime();

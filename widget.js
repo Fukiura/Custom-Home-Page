@@ -7,6 +7,12 @@ class widget {
 
     constructor(name, element) {
         this.name = name;
+        this.handlers = [
+            element.querySelector(".top-left"),
+            element.querySelector(".top-right"),
+            element.querySelector(".bottom-left"),
+            element.querySelector(".bottom-right")
+        ];
 
         this.animationEnabled = 1; //to be implemented!
 
@@ -32,18 +38,37 @@ class widget {
     }
 
     /**
-     * Movement Widget Functionality
+     * Mouse events 
+     * addEventListener("mousedown") makes the widget is selected:
+     * 
+     *  responsible for moveSelectedWidget()
      */
     initializeMouseEvents() {
-        this.element.addEventListener("mousedown", () => {
-            widget.widgetSelected = this;
+        this.element.addEventListener("mousedown", (mouseEvent) => {
+            if (mouseEvent.button === 0) {
+                widget.widgetSelected = this;
+            }
+        });
+
+        this.handlers.forEach((handle) => {
+            handle.addEventListener("mousedown", (mouseEvent) => {
+                if (mouseEvent.button === 0) {
+                    console.log("the small box is pressed!");
+                }
+            });
         });
     }
 
+    /**
+     * Keyboard events
+     * addEventListener("keydown") saves the widget's properties:
+     * 
+     *  saving current widget's location
+     */
     initializeKeyboardEvents() {
         document.addEventListener("keydown", (event) => {
             if (widget.keyPressedBefore === "Alt" && event.key === "s") {
-                this.saveWidgetPos();
+                this.saveWidgetProperties();
             }
 
             widget.keyPressedBefore = event.key;
@@ -51,9 +76,11 @@ class widget {
     }
 
     /**
-     * Saved-Properties Widget Functionality
+     * Saves the widget's properties as localStorage items
+     * 
+     *  x and y: the current position of the widget
      */
-    saveWidgetPos() {
+    saveWidgetProperties() {
         localStorage.setItem(
             this.name, 
             JSON.stringify(
@@ -65,17 +92,22 @@ class widget {
         );
     }
 
+    /**
+     * Loads the widget's saved position, if saved.
+     * 
+     *  pos: {x, y} - the saved position of the widget
+     */
     loadWidgetPos() {
         let pos = JSON.parse(localStorage.getItem(this.name));
-        console.log(pos);
         if (pos !== null) {
             this.setPos(pos.x, pos.y);
         }
     }
 
-    //Improve the comment below...
     /**
-     * Global Move of widget
+     * Moves the selectedWidget based on the static variable: widgetSelected.
+     * 
+     * it moves if a widget is selected
      */
     static moveSelectedWidget(moveXY) {
         let selected = widget.widgetSelected;

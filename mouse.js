@@ -40,7 +40,6 @@ class mouse {
     }
 
     #mouseUpExecution() {
-
         // Widget Move Functionality
         widget.moveSelectedWidget(this.#mouseMoveDelta);
     }
