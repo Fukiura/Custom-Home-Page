@@ -1,12 +1,15 @@
 /**
  * Widget Wrapper
+ * @requires widgetEvents
  */
 class widget {
-    static widgetSelected = null;
-    static keyPressedBefore = null;
-
     constructor(name, element) {
         this.name = name;
+
+        this.animationEnabled = 1; //to be implemented!
+        this.element = element;
+        this.curPos = [parseFloat(getComputedStyle(element).getPropertyValue("left")), parseFloat(getComputedStyle(element).getPropertyValue("top"))]; // x and y pos
+
         this.handlers = [
             element.querySelector(".top-left"),
             element.querySelector(".top-right"),
@@ -14,14 +17,7 @@ class widget {
             element.querySelector(".bottom-right")
         ];
 
-        this.animationEnabled = 1; //to be implemented!
-
-        this.element = element;
-        this.element.style.left = getComputedStyle(element).left; // x pos
-        this.element.style.top = getComputedStyle(element).top; // y pos
-        
-        this.initializeMouseEvents();
-        this.initializeKeyboardEvents();
+        this.widgetEventListener = new widgetEvents(this, element);
     }
 
     getName() {
@@ -32,61 +28,37 @@ class widget {
         return this.element;
     }
 
+    /**
+     * @param {number} x 
+     * @param {number} y 
+     */
     setPos(x, y) {
-        this.element.style.left = x;
-        this.element.style.top = y;
+        this.element.style.left = String(x) + "px";
+        this.element.style.top = String(y) + "px";
+        this.curPos = [x, y];
     }
 
-    /**
-     * Mouse events 
-     * addEventListener("mousedown") makes the widget is selected:
-     * 
-     *  responsible for moveSelectedWidget()
-     */
-    initializeMouseEvents() {
-        this.element.addEventListener("mousedown", (mouseEvent) => {
-            if (mouseEvent.button === 0) {
-                widget.widgetSelected = this;
-            }
-        });
-
-        this.handlers.forEach((handle) => {
-            handle.addEventListener("mousedown", (mouseEvent) => {
-                if (mouseEvent.button === 0) {
-                    console.log("the small box is pressed!");
-                }
-            });
-        });
-    }
-
-    /**
-     * Keyboard events
-     * addEventListener("keydown") saves the widget's properties:
-     * 
-     *  saving current widget's location
-     */
-    initializeKeyboardEvents() {
-        document.addEventListener("keydown", (event) => {
-            if (widget.keyPressedBefore === "Alt" && event.key === "s") {
-                this.saveWidgetProperties();
-            }
-
-            widget.keyPressedBefore = event.key;
-        });
+    moveBy(x, y) {
+        this.element.style.left = String(this.curPos[0] + x) + "px";
+        this.element.style.top = String(this.curPos[1] + y) + "px";
+        this.curPos[0] += x;
+        this.curPos[1] += y;
+        console.log(this.curPos);
     }
 
     /**
      * Saves the widget's properties as localStorage items
+     * assigned with the widget's name
      * 
-     *  x and y: the current position of the widget
+     *  number x and number y: the current position of the widget
      */
     saveWidgetProperties() {
         localStorage.setItem(
             this.name, 
             JSON.stringify(
                 {
-                    x: String(this.element.style.left),
-                    y: String(this.element.style.top)
+                    x: this.curPos[0],
+                    y: this.curPos[1]
                 }
             )
         );
@@ -98,9 +70,9 @@ class widget {
      *  pos: {x, y} - the saved position of the widget
      */
     loadWidgetPos() {
-        let pos = JSON.parse(localStorage.getItem(this.name));
-        if (pos !== null) {
-            this.setPos(pos.x, pos.y);
+        let savedPos = JSON.parse(localStorage.getItem(this.name));
+        if (savedPos !== null) {
+            this.setPos(savedPos.x, savedPos.y);
         }
     }
 
@@ -108,15 +80,20 @@ class widget {
      * Moves the selectedWidget based on the static variable: widgetSelected.
      * 
      * it moves if a widget is selected
+     * @param {Array<Float32Array>} moveXY
      */
     static moveSelectedWidget(moveXY) {
-        let selected = widget.widgetSelected;
-        if (selected !== null) {
-            selected.setPos(
-                `${parseFloat(getComputedStyle(selected.element).left) + moveXY[0]}px`,
-                `${parseFloat(getComputedStyle(selected.element).top) + moveXY[1]}px`
+        let selectedWidget = widgetEvents.widgetSelected;
+        if (selectedWidget !== null) {
+            selectedWidget.moveBy(
+                moveXY[0],
+                moveXY[1]
             );
-            widget.widgetSelected = null;
+            widgetEvents.widgetSelected = null;
         }
+    }
+
+    static scaleSelectedWidget(scaleFactor) {
+        
     }
 }
